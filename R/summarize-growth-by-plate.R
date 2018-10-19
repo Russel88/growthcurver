@@ -80,7 +80,7 @@
 SummarizeGrowthByPlate <- function(plate,
                                    t_trim = 0,
                                    bg_correct = "min",
-                                   plot_fit = FALSE,
+                                   plot_fit = TRUE,
                                    plot_file = "growthcurver.pdf") {
 
   # make sure that the input is a data.frame
@@ -130,8 +130,8 @@ SummarizeGrowthByPlate <- function(plate,
     grDevices::cairo_pdf(plot_file, width = 12, height = 8)
     old_par <- graphics::par(mfcol = c(8, 12), mar = c(0.25, 0.25, 0.25, 0.25))
     idx_to_plot <- length(plate$time) * 1:20 / 20
-    y_lim_max <- max(plate[,setdiff(names(plate), "time")]) -
-                 min(plate[,setdiff(names(plate), "time")])
+    y_lim_max <- max(plate[,setdiff(names(plate), "time")],na.rm=T) -
+                 min(plate[,setdiff(names(plate), "time")],na.rm=T)
   }
 
   n <- 1
@@ -145,8 +145,7 @@ SummarizeGrowthByPlate <- function(plate,
                                   t_trim = t_trim,
                                   bg_correct = bg_correct,
                                   blank = plate$blank)
-      }
-      else {
+      }   else {
         gc_fit <- SummarizeGrowth(data_t = plate$time,
                                   data_n = plate[, col_name],
                                   t_trim = t_trim,
@@ -178,14 +177,14 @@ SummarizeGrowthByPlate <- function(plate,
                   y = y_lim_max,
                   labels = col_name, pos = 1)
         if (gc_fit$vals$note == "") {
-          graphics::lines(gc_fit$data$t,
+          graphics::lines(gc_fit$data$t[!is.na(gc_fit$data$N)],
                           stats::predict(gc_fit$model),
                           col = "red")
         }
       }
     }
   }
-
+  
   if (plot_fit == TRUE) {
     grDevices::dev.off()
   }

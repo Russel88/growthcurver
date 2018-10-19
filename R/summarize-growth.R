@@ -130,9 +130,8 @@ SummarizeGrowth <- function(data_t, data_n, t_trim = 0,
   if (bg_correct == "blank") {
     data_n <- data_n - blank
     data_n[data_n < 0] <- 0    # ensure readings are at least 0
-  }
-  else if (bg_correct == "min") {
-    data_n <- data_n - min(data_n)
+  } else if (bg_correct == "min") {
+    data_n <- data_n - min(data_n, na.rm = T)
   }
 
   tryCatch(

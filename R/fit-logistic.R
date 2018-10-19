@@ -29,8 +29,8 @@ FitLogistic <- function(data_t, data_n) {
   names(d) <- c("t", "n")
 
   # make some guesses for the initial parameter values
-  k_init <- max(data_n)   # carrying capacity is near the max
-  n0_init <- min(data_n[data_n > 0])  # init population size is near the min
+  k_init <- max(data_n, na.rm = T)   # carrying capacity is near the max
+  n0_init <- min(data_n[data_n > 0], na.rm = T)  # init population size is near the min
 
   # make an initial estimate for r
   glm_mod <- stats::glm(n / k_init ~ t,
@@ -51,7 +51,7 @@ FitLogistic <- function(data_t, data_n) {
                                                 n0 = n0_init,
                                                 r = r_init),
                                    control = list(maxiter = 500),
-                                   lower = c(stats::median(data_n), 0, 0),
+                                   lower = c(stats::median(data_n, na.rm = T), 0, 0),
                                    upper = c(Inf, max(data_n), Inf),
                                    data = d),
                  error = function(e) {
