@@ -1,3 +1,13 @@
+This repository is a copy of the growthcurver package. The only difference is that this code is tolerant to NAs in the input data. Install it through GitHub:
+  ```R
+  # install devtools first if you don't already have the package
+  install.packages("devtools")
+
+  # then install growthcurver
+  devtools::install_github("Russel88/growthcurver")
+  ```
+
+
 # growthcurver
 [![Travis-CI Build Status](https://travis-ci.org/sprouffske/growthcurver.svg?branch=master)](https://travis-ci.org/sprouffske/growthcurver)
 
